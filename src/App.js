@@ -1,40 +1,31 @@
 import React, { Component } from "react"
-import { inject, observer } from "mobx-react"
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import Learn from './views/learn'
+import Work from './views/work'
 
-// inject 注入状态
-// observer 将组件变为观察者
-
-@inject("counter")
-@observer
 class App extends Component {
-  componentDidMount () {
-    const { getData } = this.props.counter
-    getData()
-  }
-
   render() {
-    const { counter } = this.props
-
     return (
-      <div>
-        <button onClick={counter.increment}>+</button>
-        <span>{ counter.count }</span>
-        <button onClick={counter.decrement}>-</button>
-        <span>{counter.getResult}</span>
+      <Router>
         <div>
-          <input type="text" value={counter.username} onChange={e => counter.changeUsername(e.target.value)}/>
-          <span>{counter.username}</span>
+          <h1>App</h1>
+          <nav>
+            <ul>
+              <li><Link to="/learn">Learn</Link></li>
+              <li><Link to="/work">Work</Link></li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route path="/learn">
+              <Learn />
+            </Route>
+            <Route path="/work">
+              <Work />
+            </Route>
+          </Switch>
         </div>
-        <div>
-          {counter.users.map((user) => (
-            <div key={user.id}>
-              <span>{user.id}</span>
-              <span>{user.login}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+      </Router>
+    )
   }
 }
 
